@@ -1,0 +1,14 @@
+#!/bin/bash
+
+build(){
+   	map add_binary \
+        stty \
+	beep
+
+	add_runscript
+}
+
+help(){
+	echo "I'm too lazy to write this"
+}
+

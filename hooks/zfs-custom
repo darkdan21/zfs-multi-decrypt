@@ -1,0 +1,37 @@
+#!/bin/ash
+
+run_hook(){
+	zpool import -a
+	pools=$(zpool list -o name -H)
+	echo -e "Unlocking pools...:\n ${pools}"
+
+	while check_pools; do
+		
+		echo "Enter password:"
+		stty -echo
+		trap 'stty echo' EXIT
+		read password
+		stty echo
+		trap - EXIT
+		echo "$pools" | while IFS= read -r pool; do
+			echo "Trying... $pool"
+			echo "$password" | zfs load-key "$pool"
+		done
+	done
+	echo "Success...!"
+	return 0
+}
+
+check_pools(){
+	pools=$(zpool list -o name -H)
+	out=$(echo "$pools" | while IFS= read -r pool; do
+		if [ "$(zfs get -H -o value keystatus "${pool}")" != "available" ]; then
+			echo "Pool '$pool' does not have a loaded key"
+		fi
+	done)
+	if [ `echo "$out" | wc -c` -ne 1 ]; then
+		echo "$out"
+		return 0
+	fi
+	return 1
+}
