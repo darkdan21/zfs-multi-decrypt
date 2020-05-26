@@ -15,12 +15,12 @@ There are going to be problems with this, do don't use it - I've outlined some p
 5. Reboot
 6. Be sad because it doesn't work
 
-## Potential problems
+### Potential problems
 
 - If the ZFS commands change, this will probably break
 - There are almost certainly problems with using the same passphrase on multiple ZFS pool keys, so if you really care about security don't do this - there are better solutions.
 
-## Problems I had that I'm writing here so I remember why I did things a certain way
+### Problems I had that I'm writing here so I remember why I did things a certain way
 
 - I'm bad at shell scripting
 - The shell that executes the script is `busybox sh`, so write it in that, not bash.
